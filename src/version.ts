@@ -1,1 +1,3 @@
-export const VERSION = '0.1.0';
+declare const __VERSION__: string;
+
+export const VERSION = __VERSION__;

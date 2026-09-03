@@ -1,6 +1,10 @@
+import { createRequire } from 'node:module';
 import { defineConfig } from 'vitest/config';
 
+const pkg = createRequire(import.meta.url)('./package.json');
+
 export default defineConfig({
+  define: { __VERSION__: JSON.stringify(pkg.version) },
   test: {
     include: ['src/__tests__/**/*.test.ts'],
     exclude: ['src/__tests__/_mockFetch.ts', 'src/__tests__/e2e.test.ts'],
