@@ -206,6 +206,23 @@ describe('commands/metrics/label-values', () => {
       restore();
     }
   });
+
+  it('throws SignalctlError on upstream error status', async () => {
+    const restore = mockFetch(200, { status: 'error', error: 'boom' });
+    try {
+      await expect(
+        invoke(metricsLabelValuesCmd, {
+          name: '__name__',
+          start: '1h',
+          end: 'now',
+          metricsUid: undefined,
+          ...baseArgs
+        })
+      ).rejects.toMatchObject({ code: 'server_error', message: 'boom' });
+    } finally {
+      restore();
+    }
+  });
 });
 
 describe('commands/logs/query', () => {

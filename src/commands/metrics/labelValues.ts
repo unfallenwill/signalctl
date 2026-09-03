@@ -1,5 +1,6 @@
 import { defineCommand } from 'citty';
 import { loadConfig, parseTimeToUnixSeconds } from '../../config.js';
+import { flattenVmLabels } from '../../format.js';
 import { grafanaRequest } from '../../http.js';
 import { writeJson } from '../../output.js';
 import type { VmLabelsResponse } from '../../types.js';
@@ -27,10 +28,6 @@ export default defineCommand({
       datasourcePath: `api/v1/label/${encodeURIComponent(args.name)}/values`,
       query: { start, end }
     });
-    if (raw.status !== 'success') {
-      writeJson({ error: 'server_error', detail: raw });
-      return;
-    }
-    writeJson(raw.data);
+    writeJson(flattenVmLabels(raw));
   }
 });
