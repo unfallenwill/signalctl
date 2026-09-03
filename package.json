@@ -1,10 +1,16 @@
 {
   "name": "signalctl",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Grafana metrics/logs/traces CLI for AI agents",
   "type": "module",
   "bin": {
-    "signalctl": "dist/index.js"
+    "signalctl": "dist/index.mjs"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=18"
   },
   "scripts": {
     "dev": "tsdown --watch",
