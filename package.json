@@ -1,0 +1,42 @@
+{
+  "name": "signalctl",
+  "version": "0.1.0",
+  "description": "Grafana metrics/logs/traces CLI for AI agents",
+  "type": "module",
+  "bin": {
+    "signalctl": "dist/index.js"
+  },
+  "scripts": {
+    "dev": "tsdown --watch",
+    "build": "tsdown",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check src",
+    "lint:fix": "biome check --write src",
+    "format": "biome format --write src",
+    "format:check": "biome format src",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "coverage": "vitest run --coverage"
+  },
+  "keywords": [
+    "cli",
+    "grafana",
+    "metrics",
+    "logs",
+    "traces",
+    "agent"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.11",
+    "@types/node": "^20.12.5",
+    "@vitest/coverage-v8": "^4.1.11",
+    "tsdown": "^0.22.14",
+    "typescript": "^5.4.4",
+    "vitest": "^4.1.11"
+  },
+  "dependencies": {
+    "citty": "^0.2.2"
+  }
+}
