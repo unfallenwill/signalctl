@@ -22,7 +22,13 @@ Datasource UIDs default to a known stack; override with `GRAFANA_METRICS_UID` / 
 signalctl datasources list   # [{id, uid, name, type, url, isDefault}, ...]
 ```
 
-`.env` files are NOT read. The binary is `node dist/index.mjs` (or `signalctl` after `npm link`).
+`.env` files are NOT read. Requires Node >= 18. No install needed:
+
+```sh
+npx -y signalctl@latest <command>   # first run downloads to the npx cache
+```
+
+`@latest` always resolves to the newest published version, so the skill needs no updates on release. Examples below write `signalctl` — substitute the npx form (or a globally installed / npm-linked binary).
 
 ## Commands
 
