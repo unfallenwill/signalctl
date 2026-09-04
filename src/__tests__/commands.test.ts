@@ -1,5 +1,5 @@
 import type { ArgsDef, CommandDef } from 'citty';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import datasourcesListCmd from '../commands/datasources/list.js';
 import logsQueryCmd from '../commands/logs/query.js';
 import metricsLabelsCmd from '../commands/metrics/labels.js';
@@ -311,8 +311,18 @@ describe('commands/traces/get', () => {
 });
 
 describe('commands/traces/trace', () => {
-  it('URL-encodes traceID', async () => {
-    const restore = mockFetch(200, []);
+  it('unwraps the jaeger envelope and URL-encodes traceID', async () => {
+    const restore = mockFetch(200, {
+      data: [{ traceID: 'abc/def==', spans: [], processes: {} }],
+      total: 1,
+      limit: 1,
+      offset: 0
+    });
+    const writes: string[] = [];
+    const spy = vi.spyOn(process.stdout, 'write').mockImplementation((chunk) => {
+      writes.push(String(chunk));
+      return true;
+    });
     try {
       await invoke(tracesTraceCmd, {
         traceID: 'abc/def==',
@@ -320,7 +330,9 @@ describe('commands/traces/trace', () => {
         ...baseArgs
       });
       expect(captured.url).toContain('/api/traces/abc%2Fdef%3D%3D');
+      expect(writes.join('')).toContain('"traceID":"abc/def=="');
     } finally {
+      spy.mockRestore();
       restore();
     }
   });

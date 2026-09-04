@@ -2,7 +2,7 @@ import { defineCommand } from 'citty';
 import { loadConfig } from '../../config.js';
 import { grafanaRequest } from '../../http.js';
 import { writeJson } from '../../output.js';
-import type { JaegerTrace } from '../../types.js';
+import type { JaegerTracesResponse } from '../../types.js';
 
 export default defineCommand({
   meta: {
@@ -18,11 +18,10 @@ export default defineCommand({
       token: args.token || undefined,
       tracesUid: args.tracesUid || undefined
     });
-    const raw = await grafanaRequest<JaegerTrace[]>(cfg, {
+    const raw = await grafanaRequest<JaegerTracesResponse>(cfg, {
       proxyUid: cfg.uids.traces,
       datasourcePath: `api/traces/${encodeURIComponent(args.traceID)}`
     });
-    const arr = Array.isArray(raw) ? raw : [];
-    writeJson(arr);
+    writeJson(raw.data ?? []);
   }
 });
